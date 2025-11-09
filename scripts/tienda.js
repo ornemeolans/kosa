@@ -93,6 +93,13 @@ function filterAndSearchProducts() {
     generateProducts(filteredProducts);
 }
 
+// NUEVA FUNCIÓN para manejar el menú desplegable de filtros
+function toggleFilters() {
+    const filterPanel = document.getElementById('filter-panel');
+    filterPanel.classList.toggle('open');
+}
+
+
 function generateProducts(products) {
     const container = document.getElementById("grid");
     if (!container) return; 
@@ -323,3 +330,5 @@ window.removeUnits = removeUnits;
 window.toggleCart = toggleCart;
 window.checkout = checkout;
 window.filterAndSearchProducts = filterAndSearchProducts;
+// Exponemos la nueva función
+window.toggleFilters = toggleFilters;

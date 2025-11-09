@@ -134,36 +134,58 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     font-weight: 600;
 }
 
-/* --- FILTROS Y BÚSQUEDA --- */
-.filter-controls {
-    text-align: center;
-    padding: 15px;
-    background-color: #F5F5DC; /* Fondo Beige Crema */
-    border-bottom: 1px solid #D1D1D1;
+/* --- FILTRO FLOTANTE (OFF-CANVAS) --- */
+#filter-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 300px;
+    background: #F5F5DC; /* Beige Crema */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transform: translateX(-100%); /* Oculto a la izquierda */
+    transition: transform 0.3s ease-in-out;
+    padding: 20px;
+    z-index: 2000;
+    color: #1A1A1A;
+    overflow-y: auto; /* Permite scroll si hay muchos filtros */
 }
 
-.filter-btn {
-    background-color: #1A1A1A; /* Gris Carbón */
-    color: white;
+#filter-panel.open {
+    transform: translateX(0); /* Se desliza hacia la vista */
+}
+
+#close-filters {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
     border: none;
-    padding: 8px 15px;
-    border-radius: 20px;
+    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.2s;
-    font-size: 0.9rem;
+    color: #A0522D;
+    font-weight: 600;
 }
 
-.filter-btn.active, .filter-btn:hover {
-    background-color: #A0522D; /* Siena Quemado */
-    color: #F5F5DC;
+#filter-panel h2 {
+    font-family: 'Poppins', sans-serif;
+    color: #1A1A1A;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #D1D1D1;
+    padding-bottom: 10px;
 }
+/* Estilo para los selects múltiples */
+#color-select, #category-select {
+    min-height: 80px;
+}
+/* Fin de estilos del filtro flotante */
 
-/* --- CARRITO FLOTANTE --- */
+/* --- CARRITO FLOTANTE --- (Se mantiene igual, solo un ejemplo para contexto) */
 #cart-button {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #A0522D; /* Siena Quemado (CTA) */
+    background-color: #A0522D;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -180,7 +202,7 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     right: 0;
     height: 100%;
     width: 300px;
-    background: #F5F5DC; /* Beige Crema */
+    background: #F5F5DC;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
@@ -236,7 +258,7 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
 }
 
 #checkout-button {
-    background-color: #1A1A1A; /* Gris Carbón */
+    background-color: #1A1A1A;
     color: #F5F5DC;
     width: 100%;
     padding: 10px;
@@ -249,12 +271,12 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
 }
 
 #checkout-button:hover {
-    background-color: #A0522D; /* Siena Quemado */
+    background-color: #A0522D;
 }
 
 /* --- FOOTER --- */
 footer {
-    background-color: #1A1A1A; /* Gris Carbón Profundo */
+    background-color: #1A1A1A;
     color: white;
     text-align: center;
     padding: 15px;
@@ -284,7 +306,7 @@ footer {
 }
 
 .payment-summary h2 {
-    color: #A0522D; /* Siena Quemado */
+    color: #A0522D;
 }
 
 .total-summary p {
@@ -307,7 +329,7 @@ footer {
 
 /* Estilo del botón de pago de Mercado Pago (lo que se generará) */
 #checkout-mp-button-container button {
-    background-color: #009ee3; /* Color de Mercado Pago */
+    background-color: #009ee3;
     color: white;
     font-family: 'Poppins', sans-serif;
 }
