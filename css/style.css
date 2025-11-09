@@ -123,10 +123,11 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
 /* --- GRID DE PRODUCTOS --- */
 .grid {
     display: grid;
-    /* CORRECCIÓN: Usar auto-fill para evitar que una sola tarjeta se estire */
+    /* Usar auto-fill para evitar que una sola tarjeta se estire */
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    padding: 20px;
+    /* Ajuste de Padding: Eliminamos el padding lateral (horizontal) que causaba el desajuste */
+    padding: 20px 0; 
 }
 
 /* Aplicar un tamaño fijo/mínimo y Flexbox para uniformidad */
