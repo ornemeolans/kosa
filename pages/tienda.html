@@ -72,22 +72,23 @@
                 <div id="color-buttons-container" class="button-group-filter">
                     </div>
             </div>
-
-            <div class="mb-3">
-                <label class="form-label" style="font-weight: 600;">Filtrar por Categoría:</label>
-                <div id="category-buttons-container" class="button-group-filter">
-                    </div>
-            </div>
             
             <button class="btn btn-sm btn-dark w-100 mt-3" onclick="toggleFilters()">Aplicar y Cerrar</button>
         </div>
     </div>
     <div class="container my-4">
-        <h1>Diseño Curado para el Hogar</h1>
+        <h1 class="mb-3">Diseño Curado para el Hogar</h1>
         
-        <button id="filter-button" onclick="toggleFilters()" class="btn btn-sm mb-4" style="background-color: #A0522D; color: white;">
-            ☰ Filtrar y Ordenar
-        </button>
+        <div id="category-navigation-menu" class="mb-4">
+            <button id="filter-button" onclick="toggleFilters()" class="btn btn-sm" style="background-color: #A0522D; color: white;">
+                ☰ Filtrar y Ordenar
+            </button>
+            
+            </div>
+
+        <h2 id="current-view-title" class="mb-3" style="color: #1A1A1A; font-family: 'Poppins', sans-serif;">Productos Destacados</h2>
+        
+        <input type="hidden" id="active-category-filter" data-category="featured" data-subcategory="all">
         
         </div>
     <div id="grid" class="grid">

@@ -5,7 +5,9 @@
         "price": 12500,
         "stock": 15,
         "category": "Hogar y cocina",
+        "subcategory": "Utensilios de cocina",
         "color": "Gris Carbón",
+        "featured": true,
         "images": ["../assets/ejemplo-matera-1.jpg", "../assets/ejemplo-matera-2.jpg"]
     },
     {
@@ -14,7 +16,9 @@
         "price": 8900,
         "stock": 12,
         "category": "Decoración y bazar",
+        "subcategory": "Objetos decorativos",
         "color": "Beige Crema",
+        "featured": false,
         "images": ["../assets/ejemplo-florero-1.jpg", "../assets/ejemplo-florero-2.jpg"]
     },
     {
@@ -23,7 +27,9 @@
         "price": 6500,
         "stock": 20,
         "category": "Librería y papelería",
+        "subcategory": "Escritura y Organización",
         "color": "Madera y Gris",
+        "featured": true,
         "images": ["../assets/ejemplo-organizador-1.jpg", "../assets/ejemplo-organizador-2.jpg"]
     },
     {
@@ -32,7 +38,9 @@
         "price": 8400,
         "stock": 30,
         "category": "Hogar y cocina",
+        "subcategory": "Vajillas",
         "color": "Beige Crema",
+        "featured": false,
         "images": ["../assets/ejemplo-tazas-1.jpg", "../assets/ejemplo-tazas-2.jpg"]
     },
     {
@@ -41,7 +49,9 @@
         "price": 9900,
         "stock": 18,
         "category": "Aseo y belleza",
+        "subcategory": "Aromas",
         "color": "Gris Carbón",
+        "featured": true,
         "images": ["../assets/ejemplo-difusor-1.jpg", "../assets/ejemplo-difusor-2.jpg"]
     },
     {
@@ -50,7 +60,9 @@
         "price": 18000,
         "stock": 7,
         "category": "Hogar y cocina",
+        "subcategory": "Vajillas",
         "color": "Blanco",
+        "featured": false,
         "images": ["../assets/ejemplo-vajilla-1.jpg", "../assets/ejemplo-vajilla-2.jpg"]
     },
     {
@@ -59,7 +71,9 @@
         "price": 4200,
         "stock": 5,
         "category": "Regalería y novedades",
+        "subcategory": "Regalos Originales",
         "color": "Siena Quemado",
+        "featured": false,
         "images": ["../assets/ejemplo-vela-1.jpg", "../assets/ejemplo-vela-2.jpg"]
     }
 ]
