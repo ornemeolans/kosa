@@ -139,14 +139,14 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh; /* Cambiado de 100% a 100vh para altura garantizada */
+    height: 100vh; /* Altura garantizada */
     width: 300px;
     background: #F5F5DC; /* Beige Crema */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     transform: translateX(-100%); /* Oculto a la izquierda */
     transition: transform 0.3s ease-in-out;
     padding: 20px;
-    z-index: 9999; /* Z-index aumentado para asegurar que se muestre por encima */
+    z-index: 9999; /* Asegura que se muestre por encima */
     color: #1A1A1A;
     overflow-y: auto; /* Permite scroll si hay muchos filtros */
 }
@@ -174,9 +174,38 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     border-bottom: 2px solid #D1D1D1;
     padding-bottom: 10px;
 }
-/* Estilo para los selects múltiples */
-#color-select, #category-select {
-    min-height: 80px;
+
+/* NUEVOS ESTILOS PARA GRUPOS DE BOTONES DE FILTRO */
+.button-group-filter {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los botones se envuelvan a la siguiente línea */
+    gap: 8px; /* Espacio entre los botones */
+    margin-top: 10px;
+}
+
+.filter-btn {
+    background-color: #D1D1D1; /* Gris Claro Suave (Estado Inactivo) */
+    color: #1A1A1A; /* Gris Carbón */
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    border: 1px solid #D1D1D1;
+}
+
+.filter-btn:hover {
+    background-color: #A0522D; /* Siena Quemado */
+    color: white;
+}
+
+.filter-btn.active {
+    background-color: #A0522D; /* Siena Quemado (Estado Activo) */
+    color: white;
+    border-color: #A0522D;
+    font-weight: 600;
 }
 /* Fin de estilos del filtro flotante */
 

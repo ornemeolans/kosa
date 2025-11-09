@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(products => {
             productsData = products; 
-            setupEventListeners(); // Configurar eventos
+            setupEventListeners(); 
+            renderFilterButtons(); // Generar botones al cargar
             filterAndSearchProducts(); // Aplicar filtros y ordenamiento por defecto
             updateCart();
         })
@@ -28,22 +29,104 @@ function setupEventListeners() {
         // Ejecuta el filtrado cada vez que se teclea en el buscador
         searchInput.addEventListener("input", filterAndSearchProducts);
     }
-    
-    // Los listeners para los selects de sort, color y category, y los inputs de precio
-    // ya están en el HTML con la propiedad 'onchange' o 'oninput' llamando a filterAndSearchProducts().
 }
+
+// NUEVA FUNCIÓN: Genera los botones de filtro dinámicamente
+function renderFilterButtons() {
+    // Obtener categorías únicas (y ordenarlas)
+    const allCategories = productsData.map(p => p.category).filter((value, index, self) => self.indexOf(value) === index).sort();
+    // Obtener colores únicos (filtrar vacíos y ordenar)
+    const allColors = productsData.map(p => p.color).filter((value, index, self) => self.indexOf(value) === index).filter(c => c).sort(); 
+
+    const categoryContainer = document.getElementById('category-buttons-container');
+    const colorContainer = document.getElementById('color-buttons-container');
+
+    if (!categoryContainer || !colorContainer) return;
+
+    // Generar botones de Categoría
+    categoryContainer.innerHTML = '';
+    
+    // Botón "Todas" por defecto activo
+    let allCatBtn = document.createElement('button');
+    allCatBtn.textContent = 'Todas';
+    allCatBtn.setAttribute('data-filter-value', 'all');
+    allCatBtn.classList.add('filter-btn', 'active');
+    allCatBtn.onclick = handleFilterButtonClick;
+    categoryContainer.appendChild(allCatBtn);
+
+    allCategories.forEach(category => {
+        let button = document.createElement('button');
+        button.textContent = category;
+        button.setAttribute('data-filter-value', category);
+        button.classList.add('filter-btn');
+        button.onclick = handleFilterButtonClick;
+        categoryContainer.appendChild(button);
+    });
+
+    // Generar botones de Color
+    colorContainer.innerHTML = '';
+
+    // Botón "Todos" por defecto activo
+    let allColorBtn = document.createElement('button');
+    allColorBtn.textContent = 'Todos los Colores';
+    allColorBtn.setAttribute('data-filter-value', 'all');
+    allColorBtn.classList.add('filter-btn', 'active');
+    allColorBtn.onclick = handleFilterButtonClick;
+    colorContainer.appendChild(allColorBtn);
+    
+    allColors.forEach(color => {
+        let button = document.createElement('button');
+        button.textContent = color;
+        button.setAttribute('data-filter-value', color);
+        button.classList.add('filter-btn');
+        button.onclick = handleFilterButtonClick;
+        colorContainer.appendChild(button);
+    });
+}
+
+// NUEVA FUNCIÓN: Maneja el clic en los botones de filtro (selección múltiple)
+function handleFilterButtonClick(event) {
+    const button = event.currentTarget;
+    const isAllButton = button.getAttribute('data-filter-value') === 'all';
+    const container = button.parentElement;
+
+    if (isAllButton) {
+        // Si se hace clic en 'Todas'/'Todos', desactivar todos los demás y activarlo
+        container.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+    } else {
+        // Desactivar el botón 'Todas'/'Todos' si está activo
+        container.querySelector('[data-filter-value="all"]').classList.remove('active');
+        
+        // Alternar la clase 'active' para el botón actual
+        button.classList.toggle('active');
+
+        // Si después de la alternancia no queda ningún botón activo (aparte del 'Todos'),
+        // reactivar el botón 'Todos'/'Todas' para asegurar un estado de "todo seleccionado".
+        const activeButtons = container.querySelectorAll('.filter-btn.active');
+        if (activeButtons.length === 0) {
+            container.querySelector('[data-filter-value="all"]').classList.add('active');
+        }
+    }
+    
+    filterAndSearchProducts();
+}
+
 
 function filterAndSearchProducts() {
     // 1. Obtener criterios de filtrado
     const searchText = document.getElementById("search-input").value.toLowerCase();
     
-    const categorySelect = document.getElementById("category-select");
-    // Obtiene las categorías seleccionadas, excluyendo 'all'
-    const selectedCategories = Array.from(categorySelect.selectedOptions).map(option => option.value).filter(val => val !== 'all');
+    // Obtener filtros activos de Categoría (Cambiado para leer botones)
+    const categoryContainer = document.getElementById('category-buttons-container');
+    // Si el contenedor aún no existe (por ejemplo, si se llama antes de renderFilterButtons), se usa un array vacío.
+    const activeCategoryButtons = categoryContainer ? Array.from(categoryContainer.querySelectorAll('.filter-btn.active')) : [];
+    const selectedCategories = activeCategoryButtons.map(btn => btn.getAttribute('data-filter-value')).filter(val => val !== 'all');
     
-    const colorSelect = document.getElementById("color-select");
-    // Obtiene los colores seleccionados, excluyendo 'all'
-    const selectedColors = Array.from(colorSelect.selectedOptions).map(option => option.value).filter(val => val !== 'all');
+    // Obtener filtros activos de Color (Cambiado para leer botones)
+    const colorContainer = document.getElementById('color-buttons-container');
+    const activeColorButtons = colorContainer ? Array.from(colorContainer.querySelectorAll('.filter-btn.active')) : [];
+    const selectedColors = activeColorButtons.map(btn => btn.getAttribute('data-filter-value')).filter(val => val !== 'all');
 
     // Obtiene el rango de precio, usa 0 o Infinity si están vacíos
     const priceMin = parseFloat(document.getElementById("price-min").value) || 0;
@@ -60,6 +143,7 @@ function filterAndSearchProducts() {
         const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
 
         // Criterio de Color (si no hay colores seleccionados, coincide con todo)
+        // Se añade verificación si product.color existe, ya que no todos los productos tienen color
         const colorMatch = selectedColors.length === 0 || (product.color && selectedColors.includes(product.color));
         
         // Criterio de Rango de Precio
@@ -93,12 +177,7 @@ function filterAndSearchProducts() {
     generateProducts(filteredProducts);
 }
 
-// NUEVA FUNCIÓN para manejar el menú desplegable de filtros
-function toggleFilters() {
-    const filterPanel = document.getElementById('filter-panel');
-    filterPanel.classList.toggle('open');
-}
-
+// ... (El resto de las funciones se mantienen igual, incluyendo generateProducts, toggleFilters, etc.)
 
 function generateProducts(products) {
     const container = document.getElementById("grid");
@@ -322,7 +401,12 @@ function checkout() {
     window.location.href = "pago.html"; // Redirige a la página de pago
 }
 
-// Exponer funciones al scope global para que los botones HTML funcionen
+function toggleFilters() {
+    const filterPanel = document.getElementById('filter-panel');
+    filterPanel.classList.toggle('open');
+}
+
+// Exponer funciones al scope global
 window.incrementUnits = incrementUnits;
 window.decrementUnits = decrementUnits;
 window.addToCart = addToCart;
@@ -330,5 +414,4 @@ window.removeUnits = removeUnits;
 window.toggleCart = toggleCart;
 window.checkout = checkout;
 window.filterAndSearchProducts = filterAndSearchProducts;
-// Exponemos la nueva función
 window.toggleFilters = toggleFilters;

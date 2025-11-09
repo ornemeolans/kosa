@@ -68,28 +68,15 @@
             </div>
 
             <div class="mb-4">
-                <label for="color-select" class="form-label" style="font-weight: 600;">Filtrar por Color:</label>
-                <select id="color-select" class="form-select" multiple onchange="filterAndSearchProducts()" style="height: auto;">
-                    <option value="all" selected>Todos los Colores</option>
-                    <option value="Gris Carbón">Gris Carbón</option>
-                    <option value="Beige Crema">Beige Crema</option>
-                    <option value="Madera y Gris">Madera y Gris</option>
-                    <option value="Siena Quemado">Siena Quemado</option>
-                    <option value="Blanco">Blanco</option>
-                </select>
+                <label class="form-label" style="font-weight: 600;">Filtrar por Color:</label>
+                <div id="color-buttons-container" class="button-group-filter">
+                    </div>
             </div>
 
             <div class="mb-3">
-                <label for="category-select" class="form-label" style="font-weight: 600;">Filtrar por Categoría:</label>
-                <select id="category-select" class="form-select" multiple onchange="filterAndSearchProducts()" style="height: auto;">
-                    <option value="all" selected>Todas las Categorías</option>
-                    <option value="Hogar y cocina">Hogar y cocina</option>
-                    <option value="Decoración y bazar">Decoración y bazar</option>
-                    <option value="Moda y accesorios">Moda y accesorios</option>
-                    <option value="Aseo y belleza">Aseo y belleza</option>
-                    <option value="Regalería y novedades">Regalería y novedades</option>
-                    <option value="Librería y papelería">Librería y papelería</option>
-                </select>
+                <label class="form-label" style="font-weight: 600;">Filtrar por Categoría:</label>
+                <div id="category-buttons-container" class="button-group-filter">
+                    </div>
             </div>
             
             <button class="btn btn-sm btn-dark w-100 mt-3" onclick="toggleFilters()">Aplicar y Cerrar</button>
