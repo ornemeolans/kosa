@@ -1,0 +1,42 @@
+[
+    {
+        "name": "MATERA MINIMAL",
+        "description": "Termo de acero inoxidable doble pared, 500ml. Diseño escandinavo. Mantiene 12hs frío/calor.",
+        "price": 12500,
+        "stock": 15,
+        "category": "Bazar",
+        "images": ["../assets/ejemplo-matera-1.jpg", "../assets/ejemplo-matera-2.jpg"]
+    },
+    {
+        "name": "FLORERO GEOMÉTRICO",
+        "description": "Florero de cerámica en tono Beige Crema. Acabado mate. Dimensiones: 25cm x 10cm, ideal para el centro de mesa.",
+        "price": 8900,
+        "stock": 12,
+        "category": "Decoración",
+        "images": ["../assets/ejemplo-florero-1.jpg", "../assets/ejemplo-florero-2.jpg"]
+    },
+    {
+        "name": "ORGANIZADOR ESCRITORIO",
+        "description": "Organizador modular de madera de pino y detalles en color Gris Carbón. Diseño minimalista y funcional.",
+        "price": 6500,
+        "stock": 20,
+        "category": "Diseño",
+        "images": ["../assets/ejemplo-organizador-1.jpg", "../assets/ejemplo-organizador-2.jpg"]
+    },
+    {
+        "name": "SET TAZAS K",
+        "description": "Set de 2 tazas de cerámica en color Beige Crema, con sutil acento en Siena Quemado. Perfectas para un café curado.",
+        "price": 8400,
+        "stock": 30,
+        "category": "Bazar",
+        "images": ["../assets/ejemplo-tazas-1.jpg", "../assets/ejemplo-tazas-2.jpg"]
+    },
+    {
+        "name": "DIFUSOR AROMÁTICO",
+        "description": "Difusor ultrasónico, diseño cilíndrico en color Gris Carbón. Eleva la estética y el ambiente del hogar.",
+        "price": 9900,
+        "stock": 18,
+        "category": "Decoración",
+        "images": ["../assets/ejemplo-difusor-1.jpg", "../assets/ejemplo-difusor-2.jpg"]
+    }
+]

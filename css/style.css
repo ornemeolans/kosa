@@ -1,0 +1,313 @@
+/* Importación de tipografías desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400&display=swap');
+
+/* COLORES KÖSA */
+/* Gris Carbón Profundo: #1A1A1A (Primario, Texto) */
+/* Beige Crema: #F5F5DC (Secundario, Fondo) */
+/* Siena Quemado: #A0522D (Acento, CTA) */
+/* Gris Claro Suave: #D1D1D1 (Apoyo) */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif; 
+    font-style: normal;
+    font-weight: 400; 
+    position: relative;
+    padding-bottom: 75px;
+    background-color: #F5F5DC; /* Beige Crema */
+    min-height: 100vh;
+}
+
+h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-button {
+    font-family: 'Poppins', sans-serif; /* Tipografía Primaria */
+}
+
+/* --- HEADER Y NAVEGACIÓN --- */
+.fondo {
+    background-color: #F5F5DC; /* Beige Crema */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1A1A1A !important; /* Gris Carbón */
+    letter-spacing: 2px;
+}
+
+.navbar-nav .nav-link {
+    color: #1A1A1A !important; 
+    font-weight: 600;
+    margin-right: 15px;
+    transition: color 0.3s;
+}
+
+.navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+    color: #A0522D !important; /* Siena Quemado al activar/hover */
+}
+
+/* --- GRID DE PRODUCTOS --- */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.card-body {
+    background-color: #D1D1D1; /* Gris Claro Suave */
+    padding: 15px;
+    border-radius: 0 0 8px 8px;
+    color: #1A1A1A;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.card-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: #4A4A4A;
+    margin-bottom: 10px;
+}
+
+/* Controles de Cantidad */
+.count-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.count-controls button {
+    background-color: #A0522D; /* Siena Quemado */
+    color: #F5F5DC; /* Beige Crema */
+    border: none;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.count-controls button:hover {
+    background-color: #753C22;
+}
+
+.unit-count {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+}
+
+/* Botón de Agregar al Carrito (CTA Principal) */
+.add-to-cart button {
+    width: 100%;
+    background-color: #1A1A1A; /* Gris Carbón Profundo */
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+.add-to-cart button:hover {
+    background-color: #A0522D; /* Siena Quemado al hacer hover */
+}
+
+/* Mensajes de Stock */
+.stock-warning-units {
+    font-size: 0.85rem;
+    color: #A0522D;
+    font-weight: 600;
+}
+
+/* --- FILTROS Y BÚSQUEDA --- */
+.filter-controls {
+    text-align: center;
+    padding: 15px;
+    background-color: #F5F5DC; /* Fondo Beige Crema */
+    border-bottom: 1px solid #D1D1D1;
+}
+
+.filter-btn {
+    background-color: #1A1A1A; /* Gris Carbón */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 0.9rem;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background-color: #A0522D; /* Siena Quemado */
+    color: #F5F5DC;
+}
+
+/* --- CARRITO FLOTANTE --- */
+#cart-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #A0522D; /* Siena Quemado (CTA) */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+#cart-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 300px;
+    background: #F5F5DC; /* Beige Crema */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    padding: 20px;
+    z-index: 2000;
+    color: #1A1A1A;
+}
+
+#cart-panel.open {
+    transform: translateX(0);
+}
+
+#close-cart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #1A1A1A;
+}
+
+#cart-panel h2 {
+    font-family: 'Poppins', sans-serif;
+    color: #1A1A1A;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #A0522D;
+    padding-bottom: 10px;
+}
+
+#cart-panel ul {
+    list-style: none;
+    padding: 0;
+}
+
+#cart-panel li {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed #D1D1D1;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+}
+
+.btn-eliminar {
+    background-color: transparent;
+    color: #A0522D;
+    border: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+    margin-left: 5px;
+    text-decoration: underline;
+}
+
+#checkout-button {
+    background-color: #1A1A1A; /* Gris Carbón */
+    color: #F5F5DC;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.2s;
+}
+
+#checkout-button:hover {
+    background-color: #A0522D; /* Siena Quemado */
+}
+
+/* --- FOOTER --- */
+footer {
+    background-color: #1A1A1A; /* Gris Carbón Profundo */
+    color: white;
+    text-align: center;
+    padding: 15px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.social-media img {
+    width: 30px;
+    margin: 0 10px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.social-media img:hover {
+    opacity: 1;
+}
+
+/* --- PÁGINA DE PAGO --- */
+.payment-summary, .form-control-pago, .payment-options, #mercado-pago-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.payment-summary h2 {
+    color: #A0522D; /* Siena Quemado */
+}
+
+.total-summary p {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1A1A1A;
+    border-top: 1px solid #D1D1D1;
+    padding-top: 10px;
+}
+
+/* Estilos específicos para el formulario de pago */
+.form-control-pago input, .form-control-pago select {
+    border: 1px solid #D1D1D1;
+    border-radius: 4px;
+    padding: 8px;
+    width: 100%;
+    margin-bottom: 10px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Estilo del botón de pago de Mercado Pago (lo que se generará) */
+#checkout-mp-button-container button {
+    background-color: #009ee3; /* Color de Mercado Pago */
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
