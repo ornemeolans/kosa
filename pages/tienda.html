@@ -43,13 +43,54 @@
     </header>
     <div class="container my-4">
         <h1>Diseño Curado para el Hogar</h1>
+        
         <div class="filter-controls">
             <input type="text" id="search-input" placeholder="Buscar artículo por nombre..." class="form-control mb-3">
-            <div id="filter-buttons" class="d-flex flex-wrap justify-content-center gap-2">
-                <button class="filter-btn active" data-filter="all">Todas</button>
-                <button class="filter-btn" data-filter="Diseño">Diseño</button>
-                <button class="filter-btn" data-filter="Decoración">Decoración</button>
-                <button class="filter-btn" data-filter="Bazar">Bazar Funcional</button>
+            
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label for="sort-select" class="form-label" style="font-weight: 600;">Ordenar por:</label>
+                    <select id="sort-select" class="form-select" onchange="filterAndSearchProducts()">
+                        <option value="relevance">Más Relevante (Por defecto)</option>
+                        <option value="price-asc">Precio: Menor a Mayor</option>
+                        <option value="price-desc">Precio: Mayor a Menor</option>
+                        <option value="name-asc">Nombre: A - Z</option>
+                        <option value="name-desc">Nombre: Z - A</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label" style="font-weight: 600;">Filtrar por Precio ($):</label>
+                    <div class="d-flex gap-2">
+                        <input type="number" id="price-min" placeholder="Mín" class="form-control" oninput="filterAndSearchProducts()">
+                        <input type="number" id="price-max" placeholder="Máx" class="form-control" oninput="filterAndSearchProducts()">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="color-select" class="form-label" style="font-weight: 600;">Filtrar por Color:</label>
+                    <select id="color-select" class="form-select" multiple onchange="filterAndSearchProducts()" style="height: auto;">
+                        <option value="all" selected>Todos los Colores</option>
+                        <option value="Gris Carbón">Gris Carbón</option>
+                        <option value="Beige Crema">Beige Crema</option>
+                        <option value="Madera y Gris">Madera y Gris</option>
+                        <option value="Siena Quemado">Siena Quemado</option>
+                        <option value="Blanco">Blanco</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="category-select" class="form-label" style="font-weight: 600;">Filtrar por Categoría:</label>
+                <select id="category-select" class="form-select" multiple onchange="filterAndSearchProducts()" style="height: auto;">
+                    <option value="all" selected>Todas las Categorías</option>
+                    <option value="Hogar y cocina">Hogar y cocina</option>
+                    <option value="Decoración y bazar">Decoración y bazar</option>
+                    <option value="Moda y accesorios">Moda y accesorios</option>
+                    <option value="Aseo y belleza">Aseo y belleza</option>
+                    <option value="Regalería y novedades">Regalería y novedades</option>
+                    <option value="Librería y papelería">Librería y papelería</option>
+                </select>
             </div>
         </div>
     </div>

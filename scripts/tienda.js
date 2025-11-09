@@ -12,9 +12,9 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(products => {
             productsData = products; 
-            generateProducts(productsData);
+            setupEventListeners(); // Configurar eventos
+            filterAndSearchProducts(); // Aplicar filtros y ordenamiento por defecto
             updateCart();
-            setupEventListeners();
         })
         .catch(error => {
             console.error("Error al cargar datos:", error);
@@ -25,31 +25,73 @@ document.addEventListener("DOMContentLoaded", function () {
 function setupEventListeners() {
     const searchInput = document.getElementById("search-input");
     if(searchInput) {
+        // Ejecuta el filtrado cada vez que se teclea en el buscador
         searchInput.addEventListener("input", filterAndSearchProducts);
     }
     
-    document.querySelectorAll(".filter-btn").forEach(button => {
-        button.addEventListener("click", () => {
-            document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            filterAndSearchProducts();
-        });
-    });
+    // Los listeners para los selects de sort, color y category, y los inputs de precio
+    // ya están en el HTML con la propiedad 'onchange' o 'oninput' llamando a filterAndSearchProducts().
 }
 
 function filterAndSearchProducts() {
-    const activeFilter = document.querySelector(".filter-btn.active").getAttribute("data-filter");
+    // 1. Obtener criterios de filtrado
     const searchText = document.getElementById("search-input").value.toLowerCase();
+    
+    const categorySelect = document.getElementById("category-select");
+    // Obtiene las categorías seleccionadas, excluyendo 'all'
+    const selectedCategories = Array.from(categorySelect.selectedOptions).map(option => option.value).filter(val => val !== 'all');
+    
+    const colorSelect = document.getElementById("color-select");
+    // Obtiene los colores seleccionados, excluyendo 'all'
+    const selectedColors = Array.from(colorSelect.selectedOptions).map(option => option.value).filter(val => val !== 'all');
 
-    const filteredProducts = productsData.filter(product => {
-        const categoryMatch = activeFilter === 'all' || product.category === activeFilter;
+    // Obtiene el rango de precio, usa 0 o Infinity si están vacíos
+    const priceMin = parseFloat(document.getElementById("price-min").value) || 0;
+    const priceMax = parseFloat(document.getElementById("price-max").value) || Infinity;
+    
+    const sortBy = document.getElementById("sort-select").value;
+
+    // 2. Filtrar productos (Lógica de Múltiples Filtros - AND)
+    let filteredProducts = productsData.filter(product => {
+        // Criterio de Búsqueda (nombre o descripción)
         const searchMatch = product.name.toLowerCase().includes(searchText) || product.description.toLowerCase().includes(searchText);
-        return categoryMatch && searchMatch;
+
+        // Criterio de Categoría (si no hay categorías seleccionadas, coincide con todo)
+        const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
+
+        // Criterio de Color (si no hay colores seleccionados, coincide con todo)
+        const colorMatch = selectedColors.length === 0 || (product.color && selectedColors.includes(product.color));
+        
+        // Criterio de Rango de Precio
+        const priceMatch = product.price >= priceMin && product.price <= priceMax;
+
+        // El producto debe cumplir con **TODAS** las condiciones
+        return searchMatch && categoryMatch && colorMatch && priceMatch;
     });
 
+    // 3. Ordenar productos
+    switch (sortBy) {
+        case 'price-asc':
+            filteredProducts.sort((a, b) => a.price - b.price);
+            break;
+        case 'price-desc':
+            filteredProducts.sort((a, b) => b.price - a.price);
+            break;
+        case 'name-asc':
+            filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        case 'name-desc':
+            filteredProducts.sort((a, b) => b.name.localeCompare(a.name));
+            break;
+        case 'relevance':
+        default:
+            // "Más Relevante" mantiene el orden por defecto del JSON después del filtrado.
+            break;
+    }
+
+    // 4. Generar la vista
     generateProducts(filteredProducts);
 }
-
 
 function generateProducts(products) {
     const container = document.getElementById("grid");
@@ -200,18 +242,21 @@ function addToCart(button) {
 
 function updateCart() {
     let cartContainer = document.getElementById('cart');
-    let totalCart = document.getElementById('total-cart');
+    // Corregido: total-amount-cart es el ID en tienda.html
+    let totalAmountSpan = document.getElementById('total-amount-cart'); 
+    
     if (!cartContainer) return; 
     cartContainer.innerHTML = '';
 
+    let grandTotal = 0;
     if (cart.length === 0) {
         cartContainer.innerHTML = '<li>El carrito está vacío</li>';
         updateCartCounter(0); 
-        if (totalCart) totalCart.textContent = '$0';
+        if (totalAmountSpan) totalAmountSpan.textContent = '$0';
         return;
     }
 
-    let grandTotal = 0;
+
     cart.forEach((item, index) => {
         grandTotal += item.total;
         let listItem = document.createElement('li');
@@ -222,7 +267,7 @@ function updateCart() {
         cartContainer.appendChild(listItem);
     });
 
-    if (totalCart) totalCart.textContent = `$${grandTotal.toLocaleString('es-AR')}`;
+    if (totalAmountSpan) totalAmountSpan.textContent = `$${grandTotal.toLocaleString('es-AR')}`;
 
     let totalItems = cart.reduce((total, item) => total + item.unitCount, 0);
     updateCartCounter(totalItems);
