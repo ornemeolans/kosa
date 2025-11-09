@@ -8,7 +8,7 @@
         "subcategory": "Utensilios de cocina",
         "color": "Gris Carbón",
         "featured": true,
-        "images": ["../assets/ejemplo-matera-1.jpg", "../assets/ejemplo-matera-2.jpg"]
+        "images": ["../assets/matera minimal.png"]
     },
     {
         "name": "FLORERO GEOMÉTRICO",
@@ -19,7 +19,7 @@
         "subcategory": "Objetos decorativos",
         "color": "Beige Crema",
         "featured": false,
-        "images": ["../assets/ejemplo-florero-1.jpg", "../assets/ejemplo-florero-2.jpg"]
+        "images": ["../assets/florero geometrico.png"]
     },
     {
         "name": "ORGANIZADOR ESCRITORIO",
@@ -30,7 +30,7 @@
         "subcategory": "Escritura y Organización",
         "color": "Madera y Gris",
         "featured": true,
-        "images": ["../assets/ejemplo-organizador-1.jpg", "../assets/ejemplo-organizador-2.jpg"]
+        "images": ["../assets/organizador escritorio.png"]
     },
     {
         "name": "SET TAZAS K",
@@ -41,7 +41,7 @@
         "subcategory": "Vajillas",
         "color": "Beige Crema",
         "featured": false,
-        "images": ["../assets/ejemplo-tazas-1.jpg", "../assets/ejemplo-tazas-2.jpg"]
+        "images": ["../assets/set tazas.png"]
     },
     {
         "name": "DIFUSOR AROMÁTICO",
@@ -52,7 +52,7 @@
         "subcategory": "Aromas",
         "color": "Gris Carbón",
         "featured": true,
-        "images": ["../assets/ejemplo-difusor-1.jpg", "../assets/ejemplo-difusor-2.jpg"]
+        "images": ["../assets/difusor aromatico.png"]
     },
     {
         "name": "VAJILLA NÓRDICA",
@@ -63,7 +63,7 @@
         "subcategory": "Vajillas",
         "color": "Blanco",
         "featured": false,
-        "images": ["../assets/ejemplo-vajilla-1.jpg", "../assets/ejemplo-vajilla-2.jpg"]
+        "images": ["../assets/vajilla nordica.png"]
     },
     {
         "name": "VELA DE SOJA ESENCIAL",
@@ -74,7 +74,7 @@
         "subcategory": "Regalos Originales",
         "color": "Siena Quemado",
         "featured": false,
-        "images": ["../assets/ejemplo-vela-1.jpg", "../assets/ejemplo-vela-2.jpg"]
+        "images": ["../assets/vela de soja.png"]
     },
     {
         "name": "SET CUBIERTOS 25 PIEZAS",
