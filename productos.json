@@ -75,5 +75,71 @@
         "color": "Siena Quemado",
         "featured": false,
         "images": ["../assets/ejemplo-vela-1.jpg", "../assets/ejemplo-vela-2.jpg"]
+    },
+    {
+        "name": "SET CUBIERTOS 25 PIEZAS",
+        "description": "Set de cubiertos de acero inoxidable 25 piezas con mango negro ergonómico. Incluye pelador.",
+        "price": 15900,
+        "stock": 10,
+        "category": "Hogar y cocina",
+        "subcategory": "Cubiertos",
+        "color": "Negro y Cromo",
+        "featured": true,
+        "images": ["../assets/cubiertos.png"]
+    },
+    {
+        "name": "JARRO QUENCHER ROSAS",
+        "description": "Jarro térmico con diseño floral vintage, 1.1L (40oz). Tapa con tecnología FlowState y asa ergonómica. Ideal para hidratación diaria.",
+        "price": 24000,
+        "stock": 8,
+        "category": "Regalería y novedades",
+        "subcategory": "Accesorios de Viaje",
+        "color": "Blanco y Rosa",
+        "featured": true,
+        "images": ["../assets/jarro termico.png"]
+    },
+    {
+        "name": "JUEGO MATE AVENTURA",
+        "description": "Termo de 1.3L con manija y base metálica, con mate de acero inoxidable a juego. Diseño robusto y duradero.",
+        "price": 35000,
+        "stock": 5,
+        "category": "Hogar y cocina",
+        "subcategory": "Utensilios de cocina",
+        "color": "Negro Mate",
+        "featured": true,
+        "images": ["../assets/juego de mate y termo.png"]
+    },
+    {
+        "name": "PAVA ELÉCTRICA SCALITT",
+        "description": "Pava eléctrica de acero inoxidable SCALITT. Diseño moderno y rápido calentamiento, ideal para mate o infusiones.",
+        "price": 11200,
+        "stock": 15,
+        "category": "Hogar y cocina",
+        "subcategory": "Pequeños electrodomésticos",
+        "color": "Acero Inoxidable y Negro",
+        "featured": false,
+        "images": ["../assets/pava electrica.png"]
+    },
+    {
+        "name": "VASO CERVECERO TÉRMICO",
+        "description": "Chopp cervecero térmico de doble pared de acero, con manija verde. Mantiene el frío por horas. 700ml.",
+        "price": 14500,
+        "stock": 12,
+        "category": "Hogar y cocina",
+        "subcategory": "Vajillas",
+        "color": "Gris Cromo y Verde",
+        "featured": false,
+        "images": ["../assets/vaso cervecero.png"]
+    },
+    {
+        "name": "VASO COFFEE CHICO",
+        "description": "Vaso térmico de 200ml con tapa y correa de mano 'Coffee'. Ideal para espresso o bebidas cortas. Diseño compacto.",
+        "price": 8700,
+        "stock": 25,
+        "category": "Hogar y cocina",
+        "subcategory": "Utensilios de cocina",
+        "color": "Blanco y Celeste",
+        "featured": false,
+        "images": ["../assets/vaso termico chico con tapa.png"]
     }
 ]
