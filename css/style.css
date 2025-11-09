@@ -54,12 +54,13 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
 /* --- GRID DE PRODUCTOS --- */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* CORRECCIÓN: Usar auto-fill. Esto crea columnas vacías, impidiendo que una sola tarjeta se estire y ocupe todo el ancho (1fr). */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
     padding: 20px;
 }
 
-/* REGLA CRÍTICA 1: Aplicar tamaño fijo/mínimo y Flexbox a la tarjeta completa */
+/* Aplicar un tamaño fijo/mínimo y Flexbox para uniformidad */
 .grid > div {
     display: flex;
     flex-direction: column;
@@ -91,16 +92,16 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     margin-bottom: 5px;
 }
 
-/* REGLA CRÍTICA 2: Asegurar altura mínima para la descripción */
+/* Modificar el estilo de la descripción para que no varíe la altura del contenido */
 .card-text {
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     color: #4A4A4A;
     margin-bottom: 10px;
-    min-height: 40px; 
+    min-height: 40px; /* Asegurar espacio para al menos 2 líneas de descripción */
 }
 
-/* Controles de Cantidad */
+/* Controles de Cantidad (MODIFICADO para el nuevo select/input) */
 .count-controls {
     display: flex;
     justify-content: space-between;
@@ -108,6 +109,7 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     margin: 10px 0;
 }
 
+/* NUEVOS ESTILOS PARA EL SELECT DE CANTIDAD */
 .quantity-control-wrapper {
     margin-top: 10px;
 }
@@ -119,13 +121,12 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     font-weight: 600;
 }
 
-/* REGLA CRÍTICA 3: ANCHO FIJO para el select de cantidad */
 .unit-count-select select {
     padding: 5px 10px;
     border: 1px solid #A0522D;
     border-radius: 4px;
     font-family: 'Inter', sans-serif;
-    width: 120px; 
+    width: 120px; /* ANCHO FIJO para uniformidad */
 }
 
 /* Estilos para el campo de input manual */
@@ -160,16 +161,16 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     background-color: #A0522D; 
 }
 
-/* REGLA CRÍTICA 4: Empuja el botón "Agregar al carrito" al final */
+/* Botón de Agregar al Carrito: mt-auto asegura que esté abajo */
 .add-to-cart {
-    margin-top: auto; 
-    padding-top: 15px; 
-    border-top: 1px solid #D1D1D1; 
+    margin-top: auto; /* Empuja el botón al final del flex-container (.card-body) */
+    padding-top: 15px; /* Espacio antes del botón */
+    border-top: 1px solid #D1D1D1; /* Separador visual */
 }
 
 .add-to-cart button {
     width: 100%;
-    background-color: #1A1A1A; 
+    background-color: #1A1A1A; /* Gris Carbón Profundo */
     color: white;
     border: none;
     padding: 10px;
@@ -195,20 +196,20 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh; 
+    height: 100vh; /* Altura garantizada */
     width: 300px;
-    background: #F5F5DC; 
+    background: #F5F5DC; /* Beige Crema */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    transform: translateX(-100%); 
+    transform: translateX(-100%); /* Oculto a la izquierda */
     transition: transform 0.3s ease-in-out;
     padding: 20px;
-    z-index: 9999; 
+    z-index: 9999; /* Asegura que se muestre por encima */
     color: #1A1A1A;
-    overflow-y: auto; 
+    overflow-y: auto; /* Permite scroll si hay muchos filtros */
 }
 
 #filter-panel.open {
-    transform: translateX(0); 
+    transform: translateX(0); /* Se desliza hacia la vista */
 }
 
 #close-filters {
