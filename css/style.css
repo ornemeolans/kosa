@@ -139,14 +139,14 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     position: fixed;
     top: 0;
     left: 0;
-    height: 100%;
+    height: 100vh; /* Cambiado de 100% a 100vh para altura garantizada */
     width: 300px;
     background: #F5F5DC; /* Beige Crema */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     transform: translateX(-100%); /* Oculto a la izquierda */
     transition: transform 0.3s ease-in-out;
     padding: 20px;
-    z-index: 2000;
+    z-index: 9999; /* Z-index aumentado para asegurar que se muestre por encima */
     color: #1A1A1A;
     overflow-y: auto; /* Permite scroll si hay muchos filtros */
 }
@@ -180,7 +180,7 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
 }
 /* Fin de estilos del filtro flotante */
 
-/* --- CARRITO FLOTANTE --- (Se mantiene igual, solo un ejemplo para contexto) */
+/* --- CARRITO FLOTANTE --- */
 #cart-button {
     position: fixed;
     bottom: 20px;
