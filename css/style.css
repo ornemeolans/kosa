@@ -125,6 +125,7 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     border: 1px solid #A0522D;
     border-radius: 4px;
     font-family: 'Inter', sans-serif;
+    width: 120px; /* <--- WIDTH FIJO PARA UNIFORMIDAD */
 }
 
 /* Estilos para el campo de input manual */

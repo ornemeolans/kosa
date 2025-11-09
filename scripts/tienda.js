@@ -115,15 +115,17 @@ function generateQuantityControls(productName, maxStock) {
     const availableStock = Math.max(0, maxStock); 
     
     let selectOptions = '';
+    const initialQuantity = availableStock > 0 ? 1 : 0; 
     
     for (let i = 1; i <= Math.min(5, availableStock); i++) {
-        selectOptions += `<option value="${i}">${i}</option>`;
+        const isSelected = i === 1 ? 'selected' : '';
+        selectOptions += `<option value="${i}" ${isSelected}>${i}</option>`;
     }
     
     if (availableStock > 5) {
         selectOptions += `<option value="more">Más de 5...</option>`;
     } else if (availableStock === 0) {
-        selectOptions = `<option value="0">Agotado</option>`;
+        selectOptions = `<option value="0" selected>Agotado</option>`;
     }
 
     // Almacenamos maxStock en un atributo de datos para que las funciones lo lean
@@ -131,12 +133,12 @@ function generateQuantityControls(productName, maxStock) {
         <div class="quantity-control-wrapper" data-product-name="${productName}" data-max-stock="${availableStock}">
             <div class="unit-count-select">
                 <p>Cantidad:</p>
-                <select onchange="handleQuantityChange(this)" data-current-quantity="1" ${availableStock === 0 ? 'disabled' : ''}>
+                <select onchange="handleQuantityChange(this)" data-current-quantity="${initialQuantity}" ${availableStock === 0 ? 'disabled' : ''}>
                     ${selectOptions}
                 </select>
             </div>
             <div class="manual-input-wrapper d-none">
-                <input type="number" min="1" max="${availableStock}" value="1" placeholder="Cantidad" class="form-control-sm">
+                <input type="number" min="1" max="${availableStock}" value="${initialQuantity}" placeholder="Cantidad" class="form-control-sm">
                 <button onclick="handleManualQuantityInput(this)" class="btn-accept-quantity">Aceptar</button>
             </div>
         </div>
@@ -151,20 +153,30 @@ function handleQuantityChange(selectElement) {
     const inputField = manualWrapper.querySelector('input');
     
     const currentQuantity = parseInt(selectElement.getAttribute('data-current-quantity')) || 1;
-    const maxStock = parseInt(wrapper.getAttribute('data-max-stock')); // Leer max stock del wrapper
+    const maxStock = parseInt(wrapper.getAttribute('data-max-stock'));
 
     if (selectElement.value === 'more') {
         manualWrapper.classList.remove('d-none');
-        // Si ya había una cantidad manual > 5, la mantiene. Si no, sugiere 6 o maxStock.
-        const suggestedValue = currentQuantity > 5 ? currentQuantity : Math.min(6, maxStock);
-        inputField.value = suggestedValue;
+        
+        // Si ya hay una cantidad > 5 guardada, la usamos para pre-llenar. Si no, 6.
+        const suggestedValue = currentQuantity > 5 ? currentQuantity : 6; 
+        inputField.value = Math.min(suggestedValue, maxStock);
+        
         inputField.focus();
         selectElement.style.display = 'none'; 
     } else {
+        // Opción 1-5 o Agotado seleccionada
         manualWrapper.classList.add('d-none');
         selectElement.style.display = 'inline-block';
         if (selectElement.value !== '0') {
+            // Actualiza la cantidad actual si no es 'Agotado'
             selectElement.setAttribute('data-current-quantity', selectElement.value);
+
+            // Restablece el texto de la opción 'more' si fue modificado
+            const moreOption = selectElement.querySelector('option[value="more"]');
+            if (moreOption) {
+                moreOption.textContent = `Más de 5...`;
+            }
         }
     }
 }
@@ -176,7 +188,7 @@ function handleManualQuantityInput(button) {
     const selectElement = wrapper.querySelector('select');
     const inputField = manualWrapper.querySelector('input');
     
-    const maxStock = parseInt(wrapper.getAttribute('data-max-stock')); // Leer max stock del wrapper
+    const maxStock = parseInt(wrapper.getAttribute('data-max-stock'));
     let desiredQuantity = parseInt(inputField.value) || 1;
 
     // Validación
@@ -194,18 +206,29 @@ function handleManualQuantityInput(button) {
         inputField.value = maxStock;
     }
 
-    // Actualiza el atributo de cantidad actual en el select
+    // 1. Actualiza el atributo de cantidad actual
     selectElement.setAttribute('data-current-quantity', desiredQuantity);
 
-    // Oculta el campo manual y muestra el select
+    // 2. Oculta el campo manual y muestra el select
     manualWrapper.classList.add('d-none');
     selectElement.style.display = 'inline-block';
     
-    // Sincroniza el select con el valor manual si es posible
-    if (desiredQuantity > 5 && selectElement.querySelector('option[value="more"]')) {
-        selectElement.value = 'more';
+    const moreOption = selectElement.querySelector('option[value="more"]');
+
+    // 3. Sincroniza el select con el valor aceptado
+    if (desiredQuantity > 5) {
+        // Si la cantidad es > 5, selecciona 'more' y actualiza su texto.
+        if (moreOption) {
+            selectElement.value = 'more';
+            moreOption.textContent = `Más de 5... (${desiredQuantity} u.)`;
+        }
     } else if (desiredQuantity >= 1 && desiredQuantity <= 5) {
-        selectElement.value = desiredQuantity.toString(); // Asegura que el valor sea string para el select
+        // Si la cantidad es 1-5, selecciona el valor numérico
+        selectElement.value = desiredQuantity.toString();
+        // Aseguramos que el texto de 'more' esté limpio si volvemos a 1-5
+        if (moreOption) {
+            moreOption.textContent = `Más de 5...`;
+        }
     }
 }
 
