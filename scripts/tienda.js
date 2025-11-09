@@ -1,6 +1,6 @@
 let productsData = []; 
 let cart = JSON.parse(localStorage.getItem("cart-kosa")) || []; 
-let categoriesMap = {}; // Nuevo mapa para almacenar categorías y subcategorías
+let categoriesMap = {}; 
 
 document.addEventListener("DOMContentLoaded", function () {
     // 1. Cargar productos
@@ -13,11 +13,11 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(products => {
             productsData = products; 
-            buildCategoryMap(); // Nuevo: Construir el mapa de categorías
-            renderCategoryDropdown(); // Nuevo: Generar el menú de navegación
+            buildCategoryMap();
+            renderCategoryDropdown();
             setupEventListeners(); 
-            renderColorButtons(); // Solo colores en el panel flotante
-            // Inicializa con 'featured' por defecto si el filtro no ha sido establecido
+            renderColorButtons();
+            
             const initialFilter = document.getElementById('active-category-filter');
             if (!initialFilter.getAttribute('data-category')) {
                  initialFilter.setAttribute('data-category', 'featured');
@@ -68,7 +68,6 @@ function renderCategoryDropdown() {
     const filterButton = document.getElementById('filter-button');
     if (!container || !filterButton) return;
     
-    // Contenedor principal del dropdown
     let dropdownHTML = `
         <div class="category-dropdown-container">
             <button class="category-dropdown-btn" onclick="toggleCategoryDropdown()">
@@ -97,7 +96,6 @@ function renderCategoryDropdown() {
         // 2b. Subcategorías (si existen)
         if (category.subcategories.length > 0) {
             category.subcategories.sort().forEach(sub => {
-                // El título de la vista será la subcategoría
                 dropdownHTML += `
                     <a href="#" onclick="applyNavigationFilter('${key}', '${sub}', '${sub}')">— ${sub}</a>
                 `;
@@ -110,7 +108,6 @@ function renderCategoryDropdown() {
         </div>
     `;
     
-    // Inserta el menú después del botón de filtro (reemplazando el contenido anterior de la navegación)
     container.innerHTML = filterButton.outerHTML + dropdownHTML;
 }
 
@@ -139,7 +136,7 @@ window.applyNavigationFilter = function(category, subcategory, title) {
     }
 
     filterAndSearchProducts();
-    return false; // Previene el salto de la página
+    return false;
 }
 
 // Genera botones de color en el panel flotante
@@ -149,7 +146,6 @@ function renderColorButtons() {
     const colorContainer = document.getElementById('color-buttons-container');
 
     if (!colorContainer) {
-        // En este punto, 'filter-panel' debe existir. Si no existe, es un error de carga del HTML.
         return; 
     }
 
@@ -268,6 +264,40 @@ function filterAndSearchProducts() {
     generateProducts(filteredProducts);
 }
 
+// NUEVA FUNCIÓN: Abre el modal de la imagen
+window.openProductModal = function(productName, initialIndex = 0) {
+    const product = productsData.find(p => p.name === productName);
+    if (!product || !product.images || product.images.length === 0) return;
+
+    const modalInner = document.getElementById('modal-carousel-inner');
+    if (!modalInner) return;
+
+    let modalImagesHTML = '';
+    
+    product.images.forEach((img, i) => {
+        // Cargar las imágenes en el carrusel del modal
+        modalImagesHTML += `
+            <div class="carousel-item ${i === initialIndex ? 'active' : ''}">
+                <img src="${img}" class="d-block w-100" alt="${productName} imagen ${i + 1}" 
+                     style="max-height: 90vh; object-fit: contain; cursor: zoom-in;" 
+                     title="Clic para ver/hacer zoom">
+            </div>
+        `;
+    });
+
+    modalInner.innerHTML = modalImagesHTML;
+
+    // Inicializar y mostrar el modal de Bootstrap
+    const imageModal = new window.bootstrap.Modal(document.getElementById('imageModal'));
+    imageModal.show();
+    
+    // Asegurar que el carrusel inicie en la imagen correcta
+    const bsCarousel = window.bootstrap.Carousel.getInstance(document.getElementById('modal-carousel'));
+    if (bsCarousel) {
+        bsCarousel.to(initialIndex);
+    }
+};
+
 function generateProducts(products) {
     const container = document.getElementById("grid");
     if (!container) return; 
@@ -280,9 +310,11 @@ function generateProducts(products) {
 
     products.forEach((product, index) => {
         const carouselId = `carousel-${product.name.replace(/\s+/g, '-')}-${index}`; 
+        
+        // Modificación clave: Agregar onclick al contenedor de la imagen
         const imagesHTML = product.images.map((img, i) => `
             <div class="carousel-item ${i === 0 ? 'active' : ''}">
-                <img src="${img}" class="d-block w-100" alt="${product.name} imagen ${i + 1}" style="height: 300px; object-fit: cover;">
+                <img src="${img}" class="d-block w-100" alt="${product.name} imagen ${i + 1}" style="height: 300px; object-fit: cover;" onclick="openProductModal('${product.name.replace(/'/g, "\\'")}', ${i})">
             </div>
         `).join('');
 
@@ -585,4 +617,5 @@ window.handleFilterButtonClick = handleFilterButtonClick;
 window.generateQuantityControls = generateQuantityControls;
 window.handleQuantityChange = handleQuantityChange;
 window.handleManualQuantityInput = handleManualQuantityInput;
-window.toggleCategoryDropdown = toggleCategoryDropdown; // Expuesto
+window.toggleCategoryDropdown = toggleCategoryDropdown;
+window.openProductModal = openProductModal;

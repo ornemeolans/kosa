@@ -51,7 +51,7 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     color: #A0522D !important; /* Siena Quemado al activar/hover */
 }
 
-/* --- CATEGORY NAVIGATION MENU (Dropdown Rouxurie Style) --- */
+/* --- CATEGORY NAVIGATION MENU (Dropdown JS-controlled) --- */
 #category-navigation-menu {
     display: flex;
     align-items: center;
