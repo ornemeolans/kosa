@@ -17,7 +17,12 @@ document.addEventListener("DOMContentLoaded", function () {
             renderCategoryDropdown(); // Nuevo: Generar el menú de navegación
             setupEventListeners(); 
             renderColorButtons(); // Solo colores en el panel flotante
-            filterAndSearchProducts(); // Inicializa con 'featured' por defecto
+            // Inicializa con 'featured' por defecto si el filtro no ha sido establecido
+            const initialFilter = document.getElementById('active-category-filter');
+            if (!initialFilter.getAttribute('data-category')) {
+                 initialFilter.setAttribute('data-category', 'featured');
+            }
+            filterAndSearchProducts(); 
             updateCart();
         })
         .catch(error => {
@@ -34,25 +39,30 @@ function setupEventListeners() {
     }
 }
 
-// NUEVO: Construye el mapa de categorías y subcategorías
+// FUNCIÓN NUEVA: Maneja el toggle del dropdown
+window.toggleCategoryDropdown = function() {
+    const content = document.querySelector('.category-dropdown-content');
+    if (content) {
+        content.classList.toggle('open');
+    }
+};
+
+// Construye el mapa de categorías y subcategorías
 function buildCategoryMap() {
     categoriesMap = {
-        // La clave 'all' se usa para el enlace "VER TODO"
         'all': {name: 'Ver Todo', subcategories: []} 
     };
     productsData.forEach(p => {
         if (!categoriesMap[p.category]) {
-            // Inicializa la categoría si no existe
             categoriesMap[p.category] = {name: p.category, subcategories: []};
         }
         if (p.subcategory && !categoriesMap[p.category].subcategories.includes(p.subcategory)) {
-            // Añade subcategoría si no existe
             categoriesMap[p.category].subcategories.push(p.subcategory);
         }
     });
 }
 
-// NUEVO: Genera el menú de navegación de categorías (Tipo Dropdown)
+// Genera el menú de navegación de categorías (Tipo Dropdown)
 function renderCategoryDropdown() {
     const container = document.getElementById('category-navigation-menu');
     const filterButton = document.getElementById('filter-button');
@@ -61,7 +71,7 @@ function renderCategoryDropdown() {
     // Contenedor principal del dropdown
     let dropdownHTML = `
         <div class="category-dropdown-container">
-            <button class="category-dropdown-btn">
+            <button class="category-dropdown-btn" onclick="toggleCategoryDropdown()">
                 CATEGORÍAS ↓
             </button>
             <div class="category-dropdown-content">
@@ -72,7 +82,7 @@ function renderCategoryDropdown() {
 
     // 2. Opciones de Categoría principal
     for (const key in categoriesMap) {
-        if (key === 'all') continue; // Saltar la entrada de "Ver Todo"
+        if (key === 'all') continue; 
         const category = categoriesMap[key];
         
         dropdownHTML += `
@@ -100,11 +110,11 @@ function renderCategoryDropdown() {
         </div>
     `;
     
-    // Inserta el menú después del botón de filtro
-    filterButton.insertAdjacentHTML('afterend', dropdownHTML);
+    // Inserta el menú después del botón de filtro (reemplazando el contenido anterior de la navegación)
+    container.innerHTML = filterButton.outerHTML + dropdownHTML;
 }
 
-// NUEVO: Aplica el filtro desde la navegación
+// Aplica el filtro desde la navegación
 window.applyNavigationFilter = function(category, subcategory, title) {
     const filterInput = document.getElementById('active-category-filter');
     const viewTitle = document.getElementById('current-view-title');
@@ -112,7 +122,6 @@ window.applyNavigationFilter = function(category, subcategory, title) {
     filterInput.setAttribute('data-category', category);
     filterInput.setAttribute('data-subcategory', subcategory);
 
-    // Ajusta el título de la vista actual
     if (category === 'featured') {
         viewTitle.textContent = 'Productos Destacados';
     } else if (category === 'all') {
@@ -121,25 +130,29 @@ window.applyNavigationFilter = function(category, subcategory, title) {
         viewTitle.textContent = title;
     }
     
-    // Limpiar campo de búsqueda al navegar
     document.getElementById("search-input").value = '';
+    
+    // CIERRA EL MENÚ DESPLEGABLE AL SELECCIONAR UN FILTRO
+    const content = document.querySelector('.category-dropdown-content');
+    if (content) {
+        content.classList.remove('open');
+    }
 
     filterAndSearchProducts();
     return false; // Previene el salto de la página
 }
 
-// RENOMBRADA: Solo se usa para generar botones de color en el panel flotante
+// Genera botones de color en el panel flotante
 function renderColorButtons() {
     const allColors = productsData.map(p => p.color).filter((value, index, self) => self.indexOf(value) === index).filter(c => c).sort(); 
 
     const colorContainer = document.getElementById('color-buttons-container');
 
     if (!colorContainer) {
-        console.warn("Contenedor de botones de color no encontrado.");
+        // En este punto, 'filter-panel' debe existir. Si no existe, es un error de carga del HTML.
         return; 
     }
 
-    // Generar botones de Color (Solo en el panel flotante)
     colorContainer.innerHTML = '';
 
     let allColorBtn = document.createElement('button');
@@ -189,7 +202,6 @@ function handleFilterButtonClick(event) {
 function filterAndSearchProducts() {
     // 1. Obtener criterios de NAVEGACIÓN (categoría/subcategoría)
     const navFilter = document.getElementById('active-category-filter');
-    // Si no hay filtro, por defecto es 'featured' (al cargar la página)
     const activeCategory = navFilter ? navFilter.getAttribute('data-category') : 'featured'; 
     const activeSubcategory = navFilter ? navFilter.getAttribute('data-subcategory') : 'all';
 
@@ -231,7 +243,6 @@ function filterAndSearchProducts() {
         // Criterio de Rango de Precio (desde el filtro flotante)
         const priceMatch = product.price >= priceMin && product.price <= priceMax;
 
-        // El producto debe cumplir con los criterios de NAVEGACIÓN, BÚSQUEDA y FILTRADO
         return navMatch && searchMatch && colorMatch && priceMatch;
     });
 
@@ -574,3 +585,4 @@ window.handleFilterButtonClick = handleFilterButtonClick;
 window.generateQuantityControls = generateQuantityControls;
 window.handleQuantityChange = handleQuantityChange;
 window.handleManualQuantityInput = handleManualQuantityInput;
+window.toggleCategoryDropdown = toggleCategoryDropdown; // Expuesto
