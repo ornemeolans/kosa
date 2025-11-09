@@ -59,20 +59,19 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     padding: 20px;
 }
 
-/* Aplicar un tamaño fijo/mínimo al contenedor de la tarjeta (Punto 1 y 3) */
+/* Aplicar un tamaño fijo/mínimo y Flexbox para uniformidad */
 .grid > div {
-    /* Usar flex para que el cuerpo de la tarjeta ocupe el espacio restante */
     display: flex;
     flex-direction: column;
     min-height: 550px; /* Altura mínima para asegurar uniformidad */
-    border-radius: 8px; /* Añadir un borde redondeado a la tarjeta completa */
-    overflow: hidden; /* Ocultar contenido que se desborde */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Añadir sombra para destacar la tarjeta */
+    border-radius: 8px; 
+    overflow: hidden; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 /* Estilo para asegurar que la imagen del carrusel tenga una altura fija */
 .carousel-item img {
-    height: 300px; /* Mantener esta altura fija para la uniformidad */
+    height: 300px; 
     object-fit: cover;
 }
 

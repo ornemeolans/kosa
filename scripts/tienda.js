@@ -28,31 +28,26 @@ document.addEventListener("DOMContentLoaded", function () {
 function setupEventListeners() {
     const searchInput = document.getElementById("search-input");
     if(searchInput) {
-        // Ejecuta el filtrado cada vez que se teclea en el buscador
         searchInput.addEventListener("input", filterAndSearchProducts);
     }
 }
 
 // Genera los botones de filtro dinámicamente
 function renderFilterButtons() {
-    // Obtener categorías únicas (y ordenarlas)
     const allCategories = productsData.map(p => p.category).filter((value, index, self) => self.indexOf(value) === index).sort();
-    // Obtener colores únicos (filtrar vacíos y ordenar)
     const allColors = productsData.map(p => p.color).filter((value, index, self) => self.indexOf(value) === index).filter(c => c).sort(); 
 
     const categoryContainer = document.getElementById('category-buttons-container');
     const colorContainer = document.getElementById('color-buttons-container');
 
-    // Comprobación de seguridad: si los contenedores no existen, salimos
     if (!categoryContainer || !colorContainer) {
-        console.warn("Contenedores de botones de filtro no encontrados. La función de filtro no se inicializará.");
+        console.warn("Contenedores de botones de filtro no encontrados.");
         return; 
     }
 
     // Generar botones de Categoría
     categoryContainer.innerHTML = '';
     
-    // Botón "Todas" por defecto activo
     let allCatBtn = document.createElement('button');
     allCatBtn.textContent = 'Todas';
     allCatBtn.setAttribute('data-filter-value', 'all');
@@ -72,7 +67,6 @@ function renderFilterButtons() {
     // Generar botones de Color
     colorContainer.innerHTML = '';
 
-    // Botón "Todos" por defecto activo
     let allColorBtn = document.createElement('button');
     allColorBtn.textContent = 'Todos los Colores';
     allColorBtn.setAttribute('data-filter-value', 'all');
@@ -98,19 +92,15 @@ function handleFilterButtonClick(event) {
     const allButton = container.querySelector('[data-filter-value="all"]'); 
 
     if (isAllButton) {
-        // Si se hace clic en 'Todas'/'Todos', desactivar todos los demás y activarlo
         container.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
     } else {
-        // Desactivar el botón 'Todas'/'Todos' si está activo
         if (allButton) {
             allButton.classList.remove('active');
         }
         
-        // Alternar la clase 'active' para el botón actual
         button.classList.toggle('active');
 
-        // Si después de la alternancia no queda ningún botón activo, reactivar el botón 'Todos'
         const activeButtons = container.querySelectorAll('.filter-btn.active');
         if (activeButtons.length === 0 && allButton) { 
             allButton.classList.add('active');
@@ -120,30 +110,28 @@ function handleFilterButtonClick(event) {
     filterAndSearchProducts();
 }
 
-// FUNCIÓN NUEVA: Genera los controles de cantidad
+// FUNCIÓN MODIFICADA: Genera los controles de cantidad
 function generateQuantityControls(productName, maxStock) {
-    // Generar opciones de 1 a 5
-    let selectOptions = '';
-    // Aseguramos que el select tenga opciones si hay stock
     const availableStock = Math.max(0, maxStock); 
+    
+    let selectOptions = '';
     
     for (let i = 1; i <= Math.min(5, availableStock); i++) {
         selectOptions += `<option value="${i}">${i}</option>`;
     }
     
-    // Si hay stock para más de 5, agregar la opción "Más de 5"
     if (availableStock > 5) {
         selectOptions += `<option value="more">Más de 5...</option>`;
     } else if (availableStock === 0) {
-        // Opción si el producto está agotado
         selectOptions = `<option value="0">Agotado</option>`;
     }
 
+    // Almacenamos maxStock en un atributo de datos para que las funciones lo lean
     const html = `
-        <div class="quantity-control-wrapper" data-product-name="${productName}">
+        <div class="quantity-control-wrapper" data-product-name="${productName}" data-max-stock="${availableStock}">
             <div class="unit-count-select">
                 <p>Cantidad:</p>
-                <select onchange="handleQuantityChange(this, ${availableStock})" data-current-quantity="1" ${availableStock === 0 ? 'disabled' : ''}>
+                <select onchange="handleQuantityChange(this)" data-current-quantity="1" ${availableStock === 0 ? 'disabled' : ''}>
                     ${selectOptions}
                 </select>
             </div>
@@ -156,40 +144,39 @@ function generateQuantityControls(productName, maxStock) {
     return html;
 }
 
-// FUNCIÓN NUEVA: Maneja el cambio en el select
-function handleQuantityChange(selectElement, maxStock) {
+// FUNCIÓN MODIFICADA: Maneja el cambio en el select
+function handleQuantityChange(selectElement) {
     const wrapper = selectElement.closest('.quantity-control-wrapper');
     const manualWrapper = wrapper.querySelector('.manual-input-wrapper');
     const inputField = manualWrapper.querySelector('input');
-    // Leer la cantidad actualmente aceptada/seleccionada
+    
     const currentQuantity = parseInt(selectElement.getAttribute('data-current-quantity')) || 1;
+    const maxStock = parseInt(wrapper.getAttribute('data-max-stock')); // Leer max stock del wrapper
 
     if (selectElement.value === 'more') {
-        // Muestra el campo manual y el botón "Aceptar"
         manualWrapper.classList.remove('d-none');
-        // Inicializa el campo con la última cantidad válida, o la cantidad actual del select si fue > 5
-        inputField.value = currentQuantity > 5 ? currentQuantity : 6; 
+        // Si ya había una cantidad manual > 5, la mantiene. Si no, sugiere 6 o maxStock.
+        const suggestedValue = currentQuantity > 5 ? currentQuantity : Math.min(6, maxStock);
+        inputField.value = suggestedValue;
         inputField.focus();
-        // Oculta el select temporalmente
         selectElement.style.display = 'none'; 
     } else {
-        // Opción 1-5 seleccionada o stock 0
         manualWrapper.classList.add('d-none');
         selectElement.style.display = 'inline-block';
         if (selectElement.value !== '0') {
-            // Actualiza la cantidad actual si no es 'Agotado'
             selectElement.setAttribute('data-current-quantity', selectElement.value);
         }
     }
 }
 
-// FUNCIÓN NUEVA: Maneja la aceptación del input manual
+// FUNCIÓN MODIFICADA: Maneja la aceptación del input manual
 function handleManualQuantityInput(button) {
     const manualWrapper = button.closest('.manual-input-wrapper');
     const wrapper = button.closest('.quantity-control-wrapper');
     const selectElement = wrapper.querySelector('select');
     const inputField = manualWrapper.querySelector('input');
-    const maxStock = parseInt(inputField.getAttribute('max'));
+    
+    const maxStock = parseInt(wrapper.getAttribute('data-max-stock')); // Leer max stock del wrapper
     let desiredQuantity = parseInt(inputField.value) || 1;
 
     // Validación
@@ -214,41 +201,34 @@ function handleManualQuantityInput(button) {
     manualWrapper.classList.add('d-none');
     selectElement.style.display = 'inline-block';
     
-    // Si la cantidad ingresada > 5, el select debe mostrar "Más de 5..."
+    // Sincroniza el select con el valor manual si es posible
     if (desiredQuantity > 5 && selectElement.querySelector('option[value="more"]')) {
         selectElement.value = 'more';
     } else if (desiredQuantity >= 1 && desiredQuantity <= 5) {
-        // Si la cantidad es 1-5, selecciona el valor numérico en el dropdown
-        selectElement.value = desiredQuantity;
+        selectElement.value = desiredQuantity.toString(); // Asegura que el valor sea string para el select
     }
 }
 
 
 function filterAndSearchProducts() {
-    // 1. Obtener criterios de filtrado
     const searchInput = document.getElementById("search-input");
     const searchText = searchInput ? searchInput.value.toLowerCase() : "";
     
-    // Obtener filtros activos de Categoría 
     const categoryContainer = document.getElementById('category-buttons-container');
     const activeCategoryButtons = categoryContainer ? Array.from(categoryContainer.querySelectorAll('.filter-btn.active')) : [];
     const selectedCategories = activeCategoryButtons.map(btn => btn.getAttribute('data-filter-value')).filter(val => val !== 'all');
     
-    // Obtener filtros activos de Color 
     const colorContainer = document.getElementById('color-buttons-container');
     const activeColorButtons = colorContainer ? Array.from(colorContainer.querySelectorAll('.filter-btn.active')) : [];
     const selectedColors = activeColorButtons.map(btn => btn.getAttribute('data-filter-value')).filter(val => val !== 'all');
 
-    // Obtiene el rango de precio
     const priceMin = parseFloat(document.getElementById("price-min")?.value) || 0;
     const priceMax = parseFloat(document.getElementById("price-max")?.value) || Infinity;
     
-    // Obtiene el ordenamiento
     const sortSelect = document.getElementById("sort-select");
     const sortBy = sortSelect ? sortSelect.value : 'relevance';
 
 
-    // 2. Filtrar productos
     let filteredProducts = productsData.filter(product => {
         const searchMatch = product.name.toLowerCase().includes(searchText) || product.description.toLowerCase().includes(searchText);
         const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.category);
@@ -257,7 +237,6 @@ function filterAndSearchProducts() {
         return searchMatch && categoryMatch && colorMatch && priceMatch;
     });
 
-    // 3. Ordenar productos
     switch (sortBy) {
         case 'price-asc':
             filteredProducts.sort((a, b) => a.price - b.price);
@@ -276,7 +255,6 @@ function filterAndSearchProducts() {
             break;
     }
 
-    // 4. Generar la vista
     generateProducts(filteredProducts);
 }
 
@@ -345,11 +323,10 @@ function addToCart(button) {
     let product = productsData.find(p => p.name === title);
     if (!product) return;
 
-    // Obtener la cantidad del nuevo control dinámico (lee el atributo 'data-current-quantity' del select)
     const quantityWrapper = card.querySelector('.quantity-control-wrapper');
     const selectElement = quantityWrapper.querySelector('select');
     
-    // La cantidad actual aceptada siempre está en el atributo
+    // Lee la cantidad actual aceptada del atributo 'data-current-quantity'
     let unitCount = parseInt(selectElement.getAttribute('data-current-quantity')) || 0;
     
     let price = product.price || 0;
@@ -441,20 +418,17 @@ function updateCart() {
 }
 
 function removeUnits(index) {
-    // 1. Devolver stock al producto original (simulación)
     let itemToRemove = cart[index];
     let product = productsData.find(p => p.name === itemToRemove.title);
     if(product && product.stock !== undefined) {
-        product.stock += itemToRemove.unitCount; // Devuelve todas las unidades
+        product.stock += itemToRemove.unitCount; 
     }
 
-    // 2. Remover el ítem del carrito
     cart.splice(index, 1);
     
-    // 3. Actualizar
     localStorage.setItem("cart-kosa", JSON.stringify(cart));
     updateCart();
-    filterAndSearchProducts(); // Re-renderizar productos para actualizar stock/warning
+    filterAndSearchProducts(); 
 }
 
 function toggleCart() {
@@ -479,7 +453,7 @@ function checkout() {
     }
 
     localStorage.setItem("cart-kosa", JSON.stringify(cart));
-    window.location.href = "pago.html"; // Redirige a la página de pago
+    window.location.href = "pago.html"; 
 }
 
 function toggleFilters() {
