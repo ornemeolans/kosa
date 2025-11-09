@@ -59,11 +59,31 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     padding: 20px;
 }
 
+/* Aplicar un tamaño fijo/mínimo al contenedor de la tarjeta (Punto 1 y 3) */
+.grid > div {
+    /* Usar flex para que el cuerpo de la tarjeta ocupe el espacio restante */
+    display: flex;
+    flex-direction: column;
+    min-height: 550px; /* Altura mínima para asegurar uniformidad */
+    border-radius: 8px; /* Añadir un borde redondeado a la tarjeta completa */
+    overflow: hidden; /* Ocultar contenido que se desborde */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Añadir sombra para destacar la tarjeta */
+}
+
+/* Estilo para asegurar que la imagen del carrusel tenga una altura fija */
+.carousel-item img {
+    height: 300px; /* Mantener esta altura fija para la uniformidad */
+    object-fit: cover;
+}
+
 .card-body {
     background-color: #D1D1D1; /* Gris Claro Suave */
     padding: 15px;
     border-radius: 0 0 8px 8px;
     color: #1A1A1A;
+    flex-grow: 1; /* Permite que el cuerpo ocupe el espacio restante */
+    display: flex;
+    flex-direction: column;
 }
 
 .card-title {
@@ -72,14 +92,16 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     margin-bottom: 5px;
 }
 
+/* Modificar el estilo de la descripción para que no varíe la altura del contenido */
 .card-text {
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     color: #4A4A4A;
     margin-bottom: 10px;
+    min-height: 40px; /* Asegurar espacio para al menos 2 líneas de descripción */
 }
 
-/* Controles de Cantidad */
+/* Controles de Cantidad (MODIFICADO para el nuevo select/input) */
 .count-controls {
     display: flex;
     justify-content: space-between;
@@ -87,29 +109,64 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     margin: 10px 0;
 }
 
-.count-controls button {
-    background-color: #A0522D; /* Siena Quemado */
-    color: #F5F5DC; /* Beige Crema */
-    border: none;
-    padding: 5px 12px;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 4px;
-    transition: background-color 0.2s;
+/* NUEVOS ESTILOS PARA EL SELECT DE CANTIDAD */
+.quantity-control-wrapper {
+    margin-top: 10px;
 }
 
-.count-controls button:hover {
-    background-color: #753C22;
-}
-
-.unit-count {
+.unit-count-select {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 10px;
     font-weight: 600;
 }
 
-/* Botón de Agregar al Carrito (CTA Principal) */
+.unit-count-select select {
+    padding: 5px 10px;
+    border: 1px solid #A0522D;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Estilos para el campo de input manual */
+.manual-input-wrapper {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.manual-input-wrapper input {
+    width: 80px;
+    padding: 5px;
+    border: 1px solid #1A1A1A;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.btn-accept-quantity {
+    background-color: #1A1A1A; 
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.2s;
+}
+
+.btn-accept-quantity:hover {
+    background-color: #A0522D; 
+}
+
+/* Botón de Agregar al Carrito: mt-auto asegura que esté abajo */
+.add-to-cart {
+    margin-top: auto; /* Empuja el botón al final del flex-container (.card-body) */
+    padding-top: 15px; /* Espacio antes del botón */
+    border-top: 1px solid #D1D1D1; /* Separador visual */
+}
+
 .add-to-cart button {
     width: 100%;
     background-color: #1A1A1A; /* Gris Carbón Profundo */
@@ -119,7 +176,6 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     border-radius: 4px;
     font-weight: 600;
     cursor: pointer;
-    margin-top: 10px;
     transition: background-color 0.2s;
 }
 
@@ -175,17 +231,17 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
     padding-bottom: 10px;
 }
 
-/* NUEVOS ESTILOS PARA GRUPOS DE BOTONES DE FILTRO */
+/* ESTILOS PARA GRUPOS DE BOTONES DE FILTRO */
 .button-group-filter {
     display: flex;
-    flex-wrap: wrap; /* Permite que los botones se envuelvan a la siguiente línea */
-    gap: 8px; /* Espacio entre los botones */
+    flex-wrap: wrap; 
+    gap: 8px; 
     margin-top: 10px;
 }
 
 .filter-btn {
-    background-color: #D1D1D1; /* Gris Claro Suave (Estado Inactivo) */
-    color: #1A1A1A; /* Gris Carbón */
+    background-color: #D1D1D1; 
+    color: #1A1A1A; 
     border: none;
     padding: 6px 12px;
     border-radius: 4px;
@@ -197,17 +253,16 @@ h1, h2, h5, .navbar-nav .nav-link, .filter-btn, .add-to-cart button, #checkout-b
 }
 
 .filter-btn:hover {
-    background-color: #A0522D; /* Siena Quemado */
+    background-color: #A0522D; 
     color: white;
 }
 
 .filter-btn.active {
-    background-color: #A0522D; /* Siena Quemado (Estado Activo) */
+    background-color: #A0522D; 
     color: white;
     border-color: #A0522D;
     font-weight: 600;
 }
-/* Fin de estilos del filtro flotante */
 
 /* --- CARRITO FLOTANTE --- */
 #cart-button {
